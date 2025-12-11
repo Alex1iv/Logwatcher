@@ -1,0 +1,30 @@
+INFO: 2025-12-11 12:53:09,872: Connected successfully
+INFO: 2025-12-11 13:01:57,144: [PARSER] No new events
+INFO: 2025-12-11 13:02:07,154: [PARSER] No new events
+INFO: 2025-12-11 13:05:25,626: Watching directory: D:/IDE/Logwatcher/var/log/rsyslog/
+INFO: 2025-12-11 13:05:25,627: Pattern: logfile.txt
+INFO: 2025-12-11 13:05:25,627: Loaded state: {'D:/IDE/Logwatcher/var/log/rsyslog/logfile.txt': 0}
+INFO: 2025-12-11 13:05:25,670: Connected successfully
+INFO: 2025-12-11 13:05:25,671: Processing: D:/IDE/Logwatcher/var/log/rsyslog/logfile.txt
+INFO: 2025-12-11 13:05:25,671: Previous offset: 0
+INFO: 2025-12-11 13:05:25,672: Lines read: 16
+INFO: 2025-12-11 13:05:25,675: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,675: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,686: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,687: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,687: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,687: [PARSED NONE]
+INFO: 2025-12-11 13:05:25,695: [PARSER] No new events
+INFO: 2025-12-11 13:05:54,808: Watching directory: D:/IDE/Logwatcher/var/log/rsyslog/
+INFO: 2025-12-11 13:05:54,809: Pattern: logfile.txt
+INFO: 2025-12-11 13:05:54,809: Loaded state: {'D:/IDE/Logwatcher/var/log/rsyslog/logfile.txt': 0}
+INFO: 2025-12-11 13:05:54,852: Processing: D:/IDE/Logwatcher/var/log/rsyslog/logfile.txt
+INFO: 2025-12-11 13:05:54,853: Previous offset: 0
+INFO: 2025-12-11 13:05:54,853: Lines read: 16
+INFO: 2025-12-11 13:05:54,856: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,856: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,856: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,856: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,856: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,857: [PARSED NONE]
+INFO: 2025-12-11 13:05:54,864: [PARSER] No new events
