@@ -3,224 +3,207 @@ import yaml
 import json
 from pathlib import Path
 from glob import glob
-import os 
+import os
+from tqdm import tqdm
+import re 
 
 from parser import parse_log_line
 from postgres_writer import DBWriter
 from datetime import datetime, timedelta
-import logging 
+import logging
 
 STATE_FILE = "state/file-offsets.json"
 
 
+def is_recent_event(event, max_age_days: int):
+    # print(f"max_age_days value: {max_age_days}")
+    # print(f"max_age_days type: {type(max_age_days)}")
 
-def is_recent_event(event, max_age_days:int):
-    """Читать логи, которые произошли не позже, чем
-    """    
     cutoff = datetime.now() - timedelta(days=max_age_days)
     return event["timestamp"] >= cutoff
 
 
 def load_state():
-    """Загрузка точек остановок чтения файлов логов.
+    """Загружаем точки остановки чтения файлов
     """    
     if not Path(STATE_FILE).exists():
-        raise ValueError("No state was provided!")
-        #return {}
-        
+        print("Точки остановки не загружены")
+        #raise ValueError("Точки остановки не загружены") # No state was provided!
+        return {}
     with open(STATE_FILE, "r") as f:
         return json.load(f)
 
 
-def save_state(state:dict):
-    """Сохранение точек остановок чтения файлов логов.
-    """
+def save_state(state: dict):
     Path(STATE_FILE).parent.mkdir(parents=True, exist_ok=True)
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2)
 
 
-def tail_file(file_path:str, offset:int):
-    """
-    Читаем файл с указанного места. Возвращает точку остановки и список новых строк.
-    """
-    lines = []
-    with open(file_path, "r") as f:
-        # If file was rotated and shrank, reset offset
-        f.seek(0, 2)
-        size = f.tell()
-        if offset > size:
-            offset = 0
+def discover_files(log_dir:str, file_pattern:str, logger=None):
+    """Discover  log files using regex from config.
+    """    
+    try:
+        regex = re.compile(file_pattern)
+    except re.error as e:
+        raise ValueError(f"Invalid file_name_regex: {file_pattern}") from e
 
-        f.seek(offset)
-        for line in f:
-            lines.append(line)
+    matched_files = []
 
-        new_offset = f.tell()
-
-    return new_offset, lines
-
-
-def discover_files(log_dir, file_pattern, logger=None):
-    """
-    Returns full paths of all matching log files.
-    """
-    #pattern = str(Path(log_dir) / file_pattern)
-    #return [Path(p).resolve().as_posix() for p in glob(pattern)]
-    
-    pattern = os.path.join(log_dir, file_pattern)
-    
-    if logger:
-        logger.info(f"Looking for logs at: {pattern}")
-        
-    files = glob(pattern)
+    for name in os.listdir(log_dir):
+        if regex.match(name):
+            full_path = os.path.join(log_dir, name)
+            matched_files.append(full_path)
 
     if logger:
-        logger.info(f"Found files: {files}")
-        
-    return files
+        logger.info(f"Matched log files: {matched_files}")
+
+    return matched_files
+
+def read_new_lines_with_progress(file_path: str, start_offset: int):
+    """
+    Reads file line by line and displays a progress bar.
+    Returns (new_offset, list_of_lines)
+    """
+    
+    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+        # Determine the correct starting point
+        f.seek(0, 2) # Determine file size
+        file_size = f.tell()
+
+        if start_offset > file_size: # Handle log rotation / truncation
+            start_offset = 0 
+
+        f.seek(start_offset)
+
+        # display the progress
+        progress = tqdm(
+            total=file_size,
+            initial=start_offset,
+            unit='B',
+            unit_scale=True,
+            desc=f"Processing {os.path.basename(file_path)}",
+            dynamic_ncols=True
+            #leave=False
+        )
+       
+        while True:
+            line = f.readline()
+            if not line:
+                break
+
+            current_offset = f.tell()
+            progress.update(current_offset - progress.n)
+
+            yield line, current_offset
+
+        progress.close()
 
 
-# Функция для создания лог-файла и записи в него информации
+
 def get_logger(path, file):
-    """[Создает лог-файл для логирования в него]
-    Arguments:
-        path {string} -- путь к директории
-        file {string} -- имя файла
-    Returns:
-        [obj] -- [логер]
-    """
-    if not path:
-        os.makedirs(path)
-    
-    # проверяем, существует ли файл
+    """Логгирование
+    """    
+    os.makedirs(path, exist_ok=True)
     log_file = os.path.join(path, file)
-    
-    #если  файла нет, создаем его
-    if not os.path.isfile(log_file):
-        open(log_file, "w+").close()
-    
-    # поменяем формат логирования
-    file_logging_format = "%(levelname)s: %(asctime)s: %(message)s"
-    
-    # конфигурируем лог-файл
-    logging.basicConfig(level=logging.INFO, 
-    format = file_logging_format)
-    logger = logging.getLogger()
-    
-    # хэнлдер для записи лога в файл
-    handler = logging.FileHandler(log_file)
-    handler.setLevel(logging.INFO)
-    
-    formatter = logging.Formatter(file_logging_format)
-    handler.setFormatter(formatter)
 
+    logging.basicConfig(
+        level= logging.INFO, #logging.WARNING, #
+        format="%(levelname)s: %(asctime)s: %(message)s"
+    )
+
+    logger = logging.getLogger()
+    handler = logging.FileHandler(log_file, encoding='utf-8')
+    handler.setFormatter(logging.Formatter(
+        "%(levelname)s: %(asctime)s: %(message)s"
+    ))
     logger.addHandler(handler)
-    
+
     return logger
 
-def main(logger=None):
+
+
+def main():
+    #print("start file")
+    logger=None
     
     # Load config
-    try:
-        with open("config.yaml", "r") as f:
-            config = yaml.safe_load(f)
-
-    except FileNotFoundError:
-        print(f"Config file not found: {file_path}")
-        # if logger:
-        #     logger.error(f"Unable to load config file.")
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f)
 
     if config.get("logging", False):
-        logger = get_logger(path="logs/", file="data.logs") # логгер
-        
+        logger = get_logger(path="logs", file="data.logs")
+
     MAX_AGE_DAYS = config.get("max_event_age_days", 5)
-    
+    SAVE_OFFSET_EVERY_LINES = config.get("save_offset_every_lines", 1000)
+
     interval = config["parse_interval_seconds"]
     log_dir = config["log_dir"]
     pattern = config["file_pattern"]
 
     state = load_state()
-    
+
+    #print(f"[START] Watching directory: {log_dir}")
+
     if logger:
         logger.info(f"Watching directory: {log_dir}")
         logger.info(f"Pattern: {pattern}")
         logger.info(f"Loaded state: {state}")
-       
+
     db = DBWriter(config, logger)
-    
+
     while True:
-        # Discover files dynamically every cycle
-        files = discover_files(log_dir, pattern)
-               
+
+        files = discover_files(log_dir, pattern, logger)
         all_events = []
 
         for file_path in files:
             offset = state.get(file_path, 0)
+            #print(f"[FILE] {file_path} offset={offset}")
             
             if logger:
                 logger.info(f"Processing: {file_path}")
                 logger.info(f"Previous offset: {offset}")
-            
-            try:
-                new_offset, lines = tail_file(file_path, offset) # читаем файл с точки остановки
-              
-            except FileNotFoundError:
-                print(f"File not found: {file_path}")
-                if logger:
-                    logger.error(f"File not found: {file_path}")
-                continue
-   
-            if logger:
-                logger.info(f"Lines read: {len(lines)}")
-                
-            if len(lines) == 0:
-                # print("[FILE] No new lines to parse.")
-                if logger:
-                    logger.info("No new lines to parse.")
-            else:
-                # print("[FILE] New lines:")
-                for l in lines:
-                    print("   RAW:", repr(l))
 
-            state[file_path] = new_offset
+            lines_processed = 0
+            last_offset = offset
 
-            # Parse new lines
-            for line in lines:
-                # print(i)
+            for line, current_offset in read_new_lines_with_progress(file_path, offset):
+
+                lines_processed += 1
+                last_offset = current_offset
+
                 parsed = parse_log_line(line)
-                
+                                    
                 if parsed:
-                    # оставляем ошибки, произошедшие ранее MAX_AGE_DAYS дней
-                    if is_recent_event(parsed, MAX_AGE_DAYS): 
+                    if parsed and is_recent_event(parsed, MAX_AGE_DAYS):
                         all_events.append(parsed)
-                    else:
-                        print(
-                            f"Event older than {MAX_AGE_DAYS} days: {parsed['timestamp']}"
-                        )
-                else:
-                    # print("[PARSED NONE]")
-                    if logger:
-                        logger.info("[PARSED NONE]")
-                    pass  
-                           
 
-        # Save DB results
+                # Save offset periodically
+                if lines_processed % SAVE_OFFSET_EVERY_LINES == 0:
+                    state[file_path] = last_offset
+                    save_state(state)
+
+                    if logger:
+                        logger.info(f"Progress saved for {file_path} at offset {last_offset}")
+
+
+            # Final offset save for this file
+            state[file_path] = last_offset
+
+        # Store events
         if all_events:
             if logger:
                 logger.info(f"Parsed {len(all_events)} events")
-            
             db.insert_events(all_events)
         else:
-            print("[PARSER] No new events")
             if logger:
-                logger.info("[PARSER] No new events")
-                
-        # Сохраняем точку чтения файла (Persist offsets)
+                logger.info("No new events")
+
+        # Persist state at end of cycle
         save_state(state)
 
-        time.sleep(interval) # пауза в чтении логов
-
+        time.sleep(interval)
 
 if __name__ == "__main__":
     main()

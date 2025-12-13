@@ -1,16 +1,16 @@
 parse_interval_seconds: 10
+SAVE_OFFSET_EVERY_LINES: 1000
+max_event_age_days: 5 # skip errors elder than max_event_age_days 
 
 log_dir: "D:/IDE/Logwatcher/var/log/rsyslog/" #"/var/log/rsyslog/"
-file_pattern: "logfile.txt" #"172.18.19.*.log*"
+file_pattern: "logfile.txt" #"^172\\.18\\.19\\.\\d+\\.log$"     #"172.18.19.*.log*"
 
-max_event_age_days: 2 # skip errors elder than max_event_age_days 
-
-logging: False
+logging: True
 
 db:
   host: "localhost"
   port: 5432
   #name: "logs"
-  dbname: "LogWatcherdb"
+  dbname: "LogWatcherdb" # "postgres"
   user: "postgres"
   password: "password"

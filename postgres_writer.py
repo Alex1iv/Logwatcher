@@ -36,22 +36,30 @@ class DBWriter:
                     cur,
                     """
                     INSERT INTO log_events (
-                        timestamp, switch_name, error_type, mac, vlan, 
-                        src, dst, raw, created_at
+                        timestamp,
+                        device_ip,
+                        error_type,
+                        mac,
+                        vlan,
+                        src,
+                        dst,
+                        raw_line
                     )
                     VALUES %s
                     """,
-                    [(
-                        e["timestamp"],
-                        e["switch_name"],
-                        e["error_type"],
-                        e["mac"],
-                        e["vlan"],
-                        e["src"],
-                        e["dst"],
-                        e["raw"],
-                        e["created_at"]
-                    ) for e in events]
+                    [
+                        (
+                            e["timestamp"],
+                            e["device_ip"],
+                            e["error_type"],
+                            e["mac"],
+                            e["vlan"],
+                            e["src"],
+                            e["dst"],
+                            e["raw_line"],
+                        )
+                        for e in events
+                    ]
                 )
 
             print(f"[DB] Inserted {len(events)} events")
