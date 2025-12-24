@@ -1,0 +1,23 @@
+SAVE_OFFSET_EVERY_LINES: 1000
+max_event_age_days: 16
+url_ports: "http://stat.piter-ix.ru/ports.csv"
+local:
+  MONITORING_DIR: "/var/log/rsyslog/"
+  LOG_DIR: "logs/"
+  PORTS_PATH: "tmp/ports.csv" 
+  SECRETS_PATH: "/etc/logwatcher/env"
+  STATE_FILE: "state/file-offsets.json"
+  FILE_PATTERN: "^172\\.18\\.19\\.\\d+\\.log$"
+remote:
+  MONITORING_DIR: "var/"
+  LOG_DIR: "logs/"
+  PORTS_PATH: "tmp/ports.csv"
+  SECRETS_PATH: "secrets.yaml"
+  STATE_FILE: "state/file-offsets.json"
+  FILE_PATTERN: "logfile.txt"
+logging: true 
+db:
+  host: "localhost"
+  port: 5432
+  dbname: "postgres"
+
