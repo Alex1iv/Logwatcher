@@ -3,6 +3,7 @@ crontab
 Notebook.ipynb
 logs/data.logs
 tmp/
+_project_tree.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
