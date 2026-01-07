@@ -4,7 +4,7 @@ Notebook.ipynb
 logs/
 tmp/
 _project_tree.ipynb
-state/
+state/file-offsets.json
 
 
 # Byte-compiled / optimized / DLL files

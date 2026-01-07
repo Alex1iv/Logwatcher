@@ -60,8 +60,8 @@ def discover_files(LOG_DIR, FILE_PATTERN, logger=None):
         if regex.match(name): # Название удовлетворяет условию
             full_path = Path(LOG_DIR, name)
             matched_files.append(full_path)
-            if logger:
-                logger.info(f"[read] Matched log files: {full_path}") #name
+            # if logger:
+            #     logger.info(f"[read] Matched log files: {full_path}") #name
     if logger:
         logger.info(f"[read] Total matched log files: {len(matched_files)}")
 
