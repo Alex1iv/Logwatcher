@@ -1,9 +1,11 @@
 secrets.yaml
 crontab
 Notebook.ipynb
-logs/data.logs
+logs/
 tmp/
 _project_tree.ipynb
+state/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
