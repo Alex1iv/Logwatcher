@@ -36,7 +36,11 @@
   "/var/log/rsyslog/172.18.19.183.log": 19079,
   "/var/log/rsyslog/172.18.19.184.log": 16459736,
   "/var/log/rsyslog/172.18.19.189.log": 20979506,
+<<<<<<< HEAD
   "/var/log/rsyslog/172.18.19.19.log": 33993132,
+=======
+  "/var/log/rsyslog/172.18.19.19.log": 33991980,
+>>>>>>> 570f6a4 (from srv)
   "/var/log/rsyslog/172.18.19.192.log": 138322,
   "/var/log/rsyslog/172.18.19.199.log": 551839,
   "/var/log/rsyslog/172.18.19.2.log": 361300,
@@ -47,18 +51,28 @@
   "/var/log/rsyslog/172.18.19.214.log": 718235,
   "/var/log/rsyslog/172.18.19.215.log": 3719417,
   "/var/log/rsyslog/172.18.19.216.log": 498458,
+<<<<<<< HEAD
   "/var/log/rsyslog/172.18.19.218.log": 11796743,
   "/var/log/rsyslog/172.18.19.219.log": 15806975,
   "/var/log/rsyslog/172.18.19.220.log": 18028046,
   "/var/log/rsyslog/172.18.19.221.log": 4341788,
   "/var/log/rsyslog/172.18.19.222.log": 3034618,
   "/var/log/rsyslog/172.18.19.223.log": 7327320,
+=======
+  "/var/log/rsyslog/172.18.19.218.log": 11795141,
+  "/var/log/rsyslog/172.18.19.219.log": 15805373,
+  "/var/log/rsyslog/172.18.19.220.log": 18028046,
+  "/var/log/rsyslog/172.18.19.221.log": 4341294,
+  "/var/log/rsyslog/172.18.19.222.log": 3034618,
+  "/var/log/rsyslog/172.18.19.223.log": 7319400,
+>>>>>>> 570f6a4 (from srv)
   "/var/log/rsyslog/172.18.19.23.log": 1025,
   "/var/log/rsyslog/172.18.19.231.log": 92058,
   "/var/log/rsyslog/172.18.19.235.log": 499091,
   "/var/log/rsyslog/172.18.19.236.log": 41711087,
   "/var/log/rsyslog/172.18.19.237.log": 321720,
   "/var/log/rsyslog/172.18.19.24.log": 1025,
+<<<<<<< HEAD
   "/var/log/rsyslog/172.18.19.241.log": 50214164,
   "/var/log/rsyslog/172.18.19.242.log": 35352874,
   "/var/log/rsyslog/172.18.19.244.log": 36368579,
@@ -72,11 +86,30 @@
   "/var/log/rsyslog/172.18.19.26.log": 8365898,
   "/var/log/rsyslog/172.18.19.27.log": 3655019,
   "/var/log/rsyslog/172.18.19.28.log": 301323,
+=======
+  "/var/log/rsyslog/172.18.19.241.log": 50204812,
+  "/var/log/rsyslog/172.18.19.242.log": 35344058,
+  "/var/log/rsyslog/172.18.19.244.log": 36364552,
+  "/var/log/rsyslog/172.18.19.246.log": 42484707,
+  "/var/log/rsyslog/172.18.19.247.log": 37015689,
+  "/var/log/rsyslog/172.18.19.248.log": 4227902,
+  "/var/log/rsyslog/172.18.19.25.log": 210174,
+  "/var/log/rsyslog/172.18.19.250.log": 46910930,
+  "/var/log/rsyslog/172.18.19.253.log": 53125801,
+  "/var/log/rsyslog/172.18.19.254.log": 22910358,
+  "/var/log/rsyslog/172.18.19.26.log": 8365898,
+  "/var/log/rsyslog/172.18.19.27.log": 3655019,
+  "/var/log/rsyslog/172.18.19.28.log": 300179,
+>>>>>>> 570f6a4 (from srv)
   "/var/log/rsyslog/172.18.19.34.log": 126738,
   "/var/log/rsyslog/172.18.19.35.log": 5882,
   "/var/log/rsyslog/172.18.19.4.log": 383678,
   "/var/log/rsyslog/172.18.19.40.log": 188087,
+<<<<<<< HEAD
   "/var/log/rsyslog/172.18.19.44.log": 22607176,
+=======
+  "/var/log/rsyslog/172.18.19.44.log": 22606632,
+>>>>>>> 570f6a4 (from srv)
   "/var/log/rsyslog/172.18.19.45.log": 99966,
   "/var/log/rsyslog/172.18.19.47.log": 282709,
   "/var/log/rsyslog/172.18.19.50.log": 5163662,
