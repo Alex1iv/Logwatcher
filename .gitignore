@@ -5,7 +5,7 @@ logs/
 tmp/
 _project_tree.ipynb
 state/file-offsets.json
-
+*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
