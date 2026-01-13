@@ -53,8 +53,8 @@ class DBWriter:
                         mac,
                         vlan,
                         src,
-                        dst,
-                        raw_line
+                        dst
+                        --raw_line
                     )
                     VALUES %s
                     """,
@@ -66,8 +66,8 @@ class DBWriter:
                             e["mac"],
                             e["vlan"],
                             e["src"],
-                            e["dst"],
-                            e["raw_line"],
+                            e["dst"]
+                            #e["raw_line"],
                         )
                         for e in events
                     ]

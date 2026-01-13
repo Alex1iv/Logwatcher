@@ -66,8 +66,8 @@ def parse_log_line(line:str):
         "mac": d["mac"],
         "vlan": int(d["vlan"]),
         "src": d["src"],
-        "dst": d["dst"],
-        "raw_line": line
+        "dst": d["dst"]
+        #"raw_line": line
     }
 
 def parse_arguments():
