@@ -108,9 +108,8 @@ def main():
             # Сохраняем прогресс чтения файлов периодически
             if lines_processed % SAVE_OFFSET_EVERY_LINES == 0:
                 state[file_key] = last_offset
-                #save_state(STATE_FILE, state) # не логгируем промежуточные изменения
-                save_state(STATE_FILE, state, logger, 
-                    file_path=str(file_path), offset=last_offset)
+                save_state(STATE_FILE, state) # не логгируем промежуточные изменения
+                #save_state(STATE_FILE, state, logger, file_path=str(file_path), offset=last_offset)
 
         # Final offset save for this file
         state[file_key] = last_offset
