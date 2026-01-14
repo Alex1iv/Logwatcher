@@ -39,7 +39,7 @@ def save_state(STATE_FILE, state:dict, logger=None, file_path=None, offset=None)
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2)
     if logger and file_path is not None and offset is not None:
-        # Сохранены актуальные точки остановки чтения логов файл 
+         
         logger.info(
             f"[STATE] Сохранены актуальные точки остановки чтения логов {file_path} {offset}.")
 

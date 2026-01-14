@@ -123,7 +123,7 @@ def main():
 
     # Persist state at end of cycle
     save_state(STATE_FILE, state, logger, 
-        file_path=str(file_path), offset=last_offset)
+        file_path=str(paths["LOG_DIR"]), offset=last_offset)
 
 
 
