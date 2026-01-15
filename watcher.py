@@ -98,18 +98,17 @@ def main():
             lines_processed += 1
             last_offset = current_offset
 
-            parsed = parse_log_line(line)
+            parsed = parse_log_line(line) # парсим все строки
                                 
             if parsed:
-                # парсим только недавние события
-                if parsed and is_recent_event(parsed, MAX_AGE_DAYS):
+                if is_recent_event(parsed, MAX_AGE_DAYS): # выбираем недавние события
                     all_events.append(parsed)
 
             # Сохраняем прогресс чтения файлов периодически
             if lines_processed % SAVE_OFFSET_EVERY_LINES == 0:
                 state[file_key] = last_offset
                 save_state(STATE_FILE, state) # не логгируем промежуточные изменения
-                #save_state(STATE_FILE, state, logger, file_path=str(file_path), offset=last_offset)
+                #save_state(STATE_FILE, state, logger, file_path=str(file_path), offset=last_offset) # логгируем 
 
         # Final offset save for this file
         state[file_key] = last_offset
