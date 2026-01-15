@@ -58,7 +58,8 @@ def parse_log_line(line:str):
      
     # унифицируем названия портов с таблицей ports в Postgres
     d["src"] = d["src"].replace('Eth', 'Ethernet').replace('Po', 'port-channel')
-    
+    d["dst"] = d["dst"].replace('Eth', 'Ethernet').replace('Po', 'port-channel')   
+ 
     return {
         "timestamp": event_ts,
         "device_ip": d["device_ip"],
